@@ -32,7 +32,7 @@ namespace WebServer.Controllers
             //Заполняем дроп лист выбора автоматов
             await SetMachinesDropList();
 
-            //
+            //Получаем все типы команд
             var CmdTypes = await _dataManager.GetItems<Command>("commands/types", new Dictionary<string, string>());
             CommandsViewModel model = new CommandsViewModel();
             model.Commands = CmdTypes.ToList();
