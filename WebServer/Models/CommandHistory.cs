@@ -6,6 +6,10 @@ namespace DataApiService.Models
 {
     public class CommandHistory
     {
+        public CommandHistory()
+        {
+            Cmd = new Command();
+        }
         public int id { get; set; } = 0;
         public int terminal_id { get; set; } = 0;
         public int command_id { get; set; } = 0;

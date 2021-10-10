@@ -1,13 +1,12 @@
 ﻿@model CommandsViewModel
-@*@{ ViewData["Caption"] = "Отправка команды на терминал";
-                //Layout = null; }*@
 
 @using (Html.BeginForm("Submit", "Events", FormMethod.Post))
 {
     <div class="catalog">
         <div class="catalog__head">
-
             <span class="catalog__label">Отправка команды на терминал</span>
+            <br />
+            @*Можно было воспользоваться grid*@
             <table>
                 <tr>
                     <td>
@@ -19,67 +18,91 @@
                 </tr>
                 <tr>
                     <td>
-                        <input type="text" asp-for="IDTerminal" class="IDTerInput" />
+                        <textarea asp-for="IDTerminal" class="IDTerInput"></textarea>
                     </td>
                     <td>
                         <div class="box catalog__head-row">
                             <div class="pseudoselect catalog__select">
                                 <input asp-for="CmdId" class="sel_id_cmd" hidden />
-
                                 <input type="text" class="pseudoselect__input" placeholder="Выбрать из списка">
                                 <div class="pseudoselect__dropdown custom-scroll">
                                     <div class="pseudoselect__list">
-                                        @for(int i=0;i<Model.Commands.Count;i++)
+                                        @for (int i = 0; i < Model.Commands.Count; i++)
                                         {
-                                            <li data-id_cmd="@Model.Commands[i].id">@Model.Commands[i].name</li>
-                                            <input type="hidden" asp-for="@Model.Commands[i].id" />
-                                            <input type="hidden" asp-for="@Model.Commands[i].name" />
-                                        }
+                        <li data-id_cmd="@Model.Commands[i].id">@Model.Commands[i].name</li> //Сораняем все типы команд в скрытые поля, чтобы модель подцепила эти данные
+                        <input type="hidden" asp-for="@Model.Commands[i].id" />
+                                            <input type="hidden" asp-for="@Model.Commands[i].name" />}
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </td>
-
                 </tr>
             </table>
-            <input type="submit" value="Применить" class="btn catalog__btn"/>
-            @*<button class="btn catalog__btn">Применить</button>*@
             <div class="box catalog__head-row">
+                @*Здесь будут динамически отображены формы для параметров команд, полученные через ajax*@
                 <div id="CmdParams">
 
                 </div>
             </div>
-
-                        </div>
-        @{double summa = 0;}
-        <div class="catalog__body">
-            <div class="table-wrapper">
-                <table class="catalog__table">
-                    <thead>
-                        <tr>
-                            <th class="" data-column="0" width="60">№</th>
-                            <th class="sort" data-column="1" width="110">Дата <br>и время</th>
-                            <th class="sort" data-column="2" width="300">Команда</th>
-                            <th class="sort" data-column="3" width="90">Параметр 1</th>
-                            <th class="sort" data-column="4" width="90">Параметр 2</th>
-                            <th class="sort" data-column="5" width="90">Параметр 3</th>
-                            <th class="sort" data-column="5" width="110">Статус</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="6">Итого:</td>
-                            <td>@($"{summa:0.00} руб.")</td>
-                        </tr>
-                    </tfoot>
-                </table>
+            <div class="box catalog__head-row">
+                <button disabled class="btn catalog__btn"> Назад </button>       
+                <input type="submit" value="Отправить" class="btn catalog__btn" />
             </div>
         </div>
-    </div>
+            <div class="catalog__body">
+                <div class="table-wrapper">
+                    <table class="catalog__table">
+                        <thead>
+                            <tr>
+                                <th class="" data-column="0" width="60">№</th>
+                                <th class="sort" data-column="1" width="110">Дата и время</th>
+                                <th class="sort" data-column="2" width="300">Команда</th>
+                                <th class="sort" data-column="3" width="90">Параметр 1</th>
+                                <th class="sort" data-column="4" width="90">Параметр 2</th>
+                                <th class="sort" data-column="5" width="90">Параметр 3</th>
+                                <th class="sort" data-column="5" width="110">Статус</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null)
+                            {
+                                for (int i = 0; i < Model.LCmdHistory.Count; i++)
+                                {
+                                    <tr>
+                                        <td>
+                                            @(i+1)
+                                        </td>
+                                        <td>
+                                            @Model.LCmdHistory[i].time_created
+                                        </td>
+                                        <td>
+                                            @Model.LCmdHistory[i].Cmd.name
+                                        </td>
+                                        <td>
+                                            @Model.LCmdHistory[i].parameter1
+                                        </td>
+                                        <td>
+                                            @Model.LCmdHistory[i].parameter2
+                                        </td>
+                                        <td>
+                                        <td>
+                                            @Model.LCmdHistory[i].parameter3
+                                        </td>
+                                        <td>
+                                            @Model.LCmdHistory[i].state_name
+                                        </td>
+                                    </tr>
+                                 }
+                             }
+                        </tbody>
+                        <tfoot>
+
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
 }
                 @section Scripts
 {

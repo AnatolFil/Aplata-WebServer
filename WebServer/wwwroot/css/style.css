@@ -886,6 +886,7 @@ li.classifier_down.show {
 .catalog__head {
     position: relative;
     margin: 0 0 20px;
+    margin-top: 30px;
 }
 
 .catalog__head-row {
@@ -911,7 +912,7 @@ li.classifier_down.show {
     color: #333;
     font-size: 18px;
     min-width: 100px;
-    margin: 20px 9px 0;
+    /*margin: 20px 9px 0;*/
 }
 
 .catalog__input {
@@ -930,7 +931,7 @@ li.classifier_down.show {
 }
 
 .catalog__btn {
-    margin: 20px 9px 0 auto;
+   /* margin: 20px 9px 0 auto;*/
 }
 
     .catalog__btn.blue {
@@ -1574,7 +1575,7 @@ td {
 }
 
 .IDTerInput{
-    height: 200px;
+    height: 400px;
     width: 400px;
 }
 
@@ -1623,4 +1624,14 @@ td {
 #CmdParams {
     width: 100%;
     margin-top: 30px;
+}
+
+button:disabled,
+button[disabled] {
+    border: 1px solid #cccccc;
+    background-color: #cccccc;
+    color: #fff;
+    height: 47px;
+    padding-left:50px;
+    padding-right: 50px;
 }
