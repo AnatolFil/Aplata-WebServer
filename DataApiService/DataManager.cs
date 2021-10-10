@@ -23,6 +23,8 @@ namespace DataApiService
         /// <returns>Набор значений событий API</returns>
         Task<IEnumerable<T>> GetItems<T>(string pointName, Dictionary<string, string> getParams = null);
 
+        Task<T> SendItems<T>(string pointName, Dictionary<string, string> getParams = null);
+
         /// <summary>
         /// Аутентификация на сервисе
         /// </summary>
@@ -193,6 +195,39 @@ namespace DataApiService
                 var responseData = await _client.DownloadDataTaskAsync(url);
                 var jsonStr = System.Text.Encoding.UTF8.GetString(responseData);
                 var result = JsonSerializer.Deserialize<IEnumerable<T>>(jsonStr);
+                return result;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
+        /// <summary>
+        /// Отправка списка элементов
+        /// </summary>
+        /// <remarks>
+        /// Ошибки пробрасываются наверх, вызывающему
+        /// </remarks>
+        /// <typeparam name="T">Возвращаемый тип</typeparam>
+        /// <param name="pointName">Название точки доступа</param>
+        /// <param name="getParams">Набор параметров Get запроса</param>
+        /// <returns>Набор значений событий API</returns>
+        public async Task<T> SendItems<T>(string pointName, Dictionary<string, string> getParams = null)
+        {
+            try
+            {
+                //Адрес сервиса с токеном
+                string urlService = _options.GetUrlApiService(pointName);
+                var paramString = getParams.ToGetParameters();
+
+                var url = new Uri($"{urlService}{paramString}");
+
+                var responseData = await _client.DownloadDataTaskAsync(url);
+                var jsonStr = System.Text.Encoding.UTF8.GetString(responseData);
+                var result = JsonSerializer.Deserialize<T>(jsonStr);
                 return result;
             }
             catch (Exception)

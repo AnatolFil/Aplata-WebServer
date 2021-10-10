@@ -33,7 +33,7 @@ namespace WebServer.Controllers
         {
             //Заполняем дроп лист выбора автоматов
             await SetMachinesDropList();
-
+            
             //Получаем все типы команд
             var CmdTypes = await _dataManager.GetItems<Command>("commands/types", new Dictionary<string, string>());
             Commands = CmdTypes.ToList();
@@ -75,14 +75,29 @@ namespace WebServer.Controllers
         }
 
         [HttpPost]
-        public IActionResult Submit(CommandsViewModel CmdView)
+        public async Task<IActionResult> Submit(CommandsViewModel CmdView)
         {
             if (!ModelState.IsValid)
             {
                 return View("Index", CmdView);
             }
 
-            return View();
+            Dictionary<string, string> param = new Dictionary<string, string>();
+            param.Add("command_id", CmdView.CmdId.ToString());
+            if(CmdView.CmdParams != null)
+            {
+                param.Add("parameter1", CmdView.CmdParams.parameter1.ToString());
+                param.Add("parameter2", CmdView.CmdParams.parameter2.ToString());
+                param.Add("parameter3", CmdView.CmdParams.parameter3.ToString());
+            }
+
+            var result = await _dataManager.SendItems<CommandResult>("terminals/" + CmdView.IDTerminal.ToString() + "/command", param);
+            var resultHist = await _dataManager.GetItems<CommandHistory>("terminals/" + CmdView.IDTerminal.ToString() + "/commands", new Dictionary<string, string>());
+
+            CmdView.LCmdHistory = resultHist.ToList();
+            CmdView.CmdParams = null;
+
+            return View("Index", CmdView);
         }
 
         [ResponseCache(NoStore = true, Duration = 0)]

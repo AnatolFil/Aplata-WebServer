@@ -828,7 +828,7 @@ li.classifier_down.show {
 
     .edite_add_block .catalog__label {
         width: 100%;
-        margin: 10px 25px;
+        /*margin: 10px 25px;*/
     }
 
     .edite_add_block input {
@@ -889,7 +889,7 @@ li.classifier_down.show {
 }
 
 .catalog__head-row {
-    width: 400px;
+    width: 100%;
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
@@ -897,8 +897,9 @@ li.classifier_down.show {
 }
 
 .catalog__head .pseudoselect__dropdown {
-    left: 437px;
-    width: calc(61% - 119px);
+    left: 455px;
+    width: calc(61% - 145px);
+    z-index: 900;
 }
 
 .catalog__head-chart {
@@ -1575,4 +1576,51 @@ td {
 .IDTerInput{
     height: 200px;
     width: 400px;
+}
+
+.cmd_param {
+    
+}
+
+.cmd_wraper {
+    position: relative;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: justify;
+}
+
+    .cmd_wraper:after {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        height: auto;
+        box-sizing: border-box;
+        vertical-align: top;
+        content: '';
+    }
+
+    .cmd_wraper > div {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        /*height: 50px;*/
+        box-sizing: border-box;
+        text-align: left;
+        vertical-align: top;
+    }
+
+.cmd_param_lbl {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.cmd_input_param {
+    width: 100%;
+    height: 40px;
+}
+
+#CmdParams {
+    width: 100%;
+    margin-top: 30px;
 }

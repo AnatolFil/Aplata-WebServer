@@ -19,7 +19,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <input type="text" class="IDTerInput" />
+                        <input type="text" asp-for="IDTerminal" class="IDTerInput" />
                     </td>
                     <td>
                         <div class="box catalog__head-row">
@@ -29,9 +29,11 @@
                                 <input type="text" class="pseudoselect__input" placeholder="Выбрать из списка">
                                 <div class="pseudoselect__dropdown custom-scroll">
                                     <div class="pseudoselect__list">
-                                        @foreach (var data in Model.Commands)
+                                        @for(int i=0;i<Model.Commands.Count;i++)
                                         {
-                                            <li data-id_cmd="@data.id">@data.name</li>
+                                            <li data-id_cmd="@Model.Commands[i].id">@Model.Commands[i].name</li>
+                                            <input type="hidden" asp-for="@Model.Commands[i].id" />
+                                            <input type="hidden" asp-for="@Model.Commands[i].name" />
                                         }
                                     </div>
                                 </div>
@@ -66,6 +68,7 @@
                         </tr>
                     </thead>
                     <tbody>
+
                     </tbody>
                     <tfoot>
                         <tr>
