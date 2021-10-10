@@ -31,7 +31,11 @@ $('.pseudoselect__list li').click(function () {
 	if ($(this).hasClass('classifer')) {
 		$(this).closest('.pseudoselect').find('.id_select').val($(this).data('id'));
 	}
-	$(this).closest('.pseudoselect').find('.id_mashine').val($(this).data('id_mashine'));
+	let idCmd = $(this).data('id_cmd');
+	let curIdCmd = $(this).closest('.pseudoselect').find('.sel_id_cmd').val();
+	$(this).closest('.pseudoselect').find('.sel_id_cmd').val(idCmd);
+	if (idCmd != curIdCmd)
+		addParams(idCmd);
 	$(this).closest('.pseudoselect').find('.pseudoselect__input').val(value);
 	$(this).parent().siblings('.pseudoselect__current').text(value);
 	$(this).closest('.pseudoselect__dropdown').hide();
@@ -78,3 +82,16 @@ $(document).ready(function () {
 $(window).resize(function () {
 	$('.chart').each(setChartItemsHeight);
 })
+//Динамическое добавление форм для параметров команды
+function addParams(SelIdCmd) {
+	var data = { idCmd: SelIdCmd };
+	$.ajax({
+		url: '/Events/NewCmd',
+		type: "post",
+		data: data,
+		contentType: 'application/x-www-form-urlencoded',
+		success: function (html) {
+			$('#CmdParams').html(html);
+		}
+	});
+}

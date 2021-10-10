@@ -889,6 +889,7 @@ li.classifier_down.show {
 }
 
 .catalog__head-row {
+    width: 400px;
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
@@ -896,8 +897,8 @@ li.classifier_down.show {
 }
 
 .catalog__head .pseudoselect__dropdown {
-    left: 300px;
-    width: calc(100% - 119px);
+    left: 437px;
+    width: calc(61% - 119px);
 }
 
 .catalog__head-chart {
@@ -1572,5 +1573,6 @@ td {
 }
 
 .IDTerInput{
-    height: 100px;
+    height: 200px;
+    width: 400px;
 }

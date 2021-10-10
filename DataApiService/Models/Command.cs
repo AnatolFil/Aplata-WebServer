@@ -14,5 +14,8 @@ namespace DataApiService.Models
         public int parameter_default_value1 { get; set; } = 0;
         public int parameter_default_value2 { get; set; } = 0;
         public int parameter_default_value3 { get; set; } = 0;
+        public int parameter1 { get; set; } = 0;
+        public int parameter2 { get; set; } = 0;
+        public int parameter3 { get; set; } = 0;
     }
 }

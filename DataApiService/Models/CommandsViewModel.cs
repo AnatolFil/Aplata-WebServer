@@ -10,5 +10,6 @@ namespace DataApiService.Models
         public int IDTerminal { get; set; } = 129;
         public List<CommandHistory> LCmdHistory { get; set; }
         public int CmdId { get; set; }
+        public Command CmdParams { get; set; }
     }
 }

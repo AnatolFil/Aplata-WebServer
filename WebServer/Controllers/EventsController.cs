@@ -15,12 +15,14 @@ namespace WebServer.Controllers
     {
         private readonly ILogger<EventsController> _logger;
         private IDataManager _dataManager;
+        private List<Command> Commands;
 
         public EventsController(ILogger<EventsController> logger, IDataManager dataManager)
         {
             _logger = logger;
             _dataManager = dataManager;
             _dataManager.Auth("demo", "demo15");
+            Commands = new List<Command>();
         }
 
         /// <summary>
@@ -34,6 +36,7 @@ namespace WebServer.Controllers
 
             //Получаем все типы команд
             var CmdTypes = await _dataManager.GetItems<Command>("commands/types", new Dictionary<string, string>());
+            Commands = CmdTypes.ToList();
             CommandsViewModel model = new CommandsViewModel();
             model.Commands = CmdTypes.ToList();
             //var model1 = await _dataManager.GetItems<CommandHistory>("terminals/129/commands", new Dictionary<string, string>());
@@ -69,6 +72,27 @@ namespace WebServer.Controllers
             
 
             return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Submit(CommandsViewModel CmdView)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("Index", CmdView);
+            }
+
+            return View();
+        }
+
+        [ResponseCache(NoStore = true, Duration = 0)]
+        public async Task<IActionResult> NewCmd(int idCmd)
+        {
+            Command cmd = new Command();
+            var CmdTypes = await _dataManager.GetItems<Command>("commands/types", new Dictionary<string, string>());
+            Commands = CmdTypes.ToList();
+            cmd = Commands.FirstOrDefault<Command>(x => x.id == idCmd);
+            return PartialView("_CmdPartial", cmd);
         }
 
         /// <summary>

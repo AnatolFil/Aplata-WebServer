@@ -1,0 +1,19 @@
+﻿@model Command
+
+@{
+    if (Model.parameter_name1 != null)
+    {
+        <span class="catalog__label">@Model.parameter_name1</span>
+        <input asp-for="@Model.parameter1" value="@Model.parameter_default_value1" id="CmdParams__parameter1" name="CmdParams.parameter1"/>
+    }
+    if (Model.parameter_name2 != null)
+    {
+        <span class="catalog__label">@Model.parameter_name2</span>
+        <input asp-for="@Model.parameter2" value="@Model.parameter_default_value2" id="CmdParams__parameter2" name="CmdParams.parameter2"/>
+    }
+    if (Model.parameter_name3 != null)
+    {
+        <span class="catalog__label">@Model.parameter_name3</span>
+        <input asp-for="@Model.parameter3" value="@Model.parameter_default_value3" id="CmdParams__parameter3" name="CmdParams.parameter3"/>
+    }
+}

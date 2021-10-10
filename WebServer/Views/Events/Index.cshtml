@@ -2,7 +2,7 @@
 @*@{ ViewData["Caption"] = "Отправка команды на терминал";
                 //Layout = null; }*@
 
-@using (Html.BeginForm("Index", "Events", FormMethod.Post, htmlAttributes: new { id = "filterr" }))
+@using (Html.BeginForm("Submit", "Events", FormMethod.Post))
 {
     <div class="catalog">
         <div class="catalog__head">
@@ -19,11 +19,13 @@
                 </tr>
                 <tr>
                     <td>
-                        <input class="IDTerInput" />
+                        <input type="text" class="IDTerInput" />
                     </td>
                     <td>
                         <div class="box catalog__head-row">
                             <div class="pseudoselect catalog__select">
+                                <input asp-for="CmdId" class="sel_id_cmd" hidden />
+
                                 <input type="text" class="pseudoselect__input" placeholder="Выбрать из списка">
                                 <div class="pseudoselect__dropdown custom-scroll">
                                     <div class="pseudoselect__list">
@@ -39,12 +41,15 @@
 
                 </tr>
             </table>
-            <button class="btn catalog__btn">Применить</button>
+            <input type="submit" value="Применить" class="btn catalog__btn"/>
+            @*<button class="btn catalog__btn">Применить</button>*@
             <div class="box catalog__head-row">
+                <div id="CmdParams">
 
+                </div>
             </div>
-            
-        </div>
+
+                        </div>
         @{double summa = 0;}
         <div class="catalog__body">
             <div class="table-wrapper">
@@ -53,17 +58,18 @@
                         <tr>
                             <th class="" data-column="0" width="60">№</th>
                             <th class="sort" data-column="1" width="110">Дата <br>и время</th>
-                            <th class="sort" data-column="2" width="400">Автомат</th>
-                            <th class="sort" data-column="3" width="110">Событие</th>
-                            <th class="sort" data-column="4" width="90">Товар</th>
-                            <th class="sort" data-column="5" width="90">Сумма</th>
+                            <th class="sort" data-column="2" width="300">Команда</th>
+                            <th class="sort" data-column="3" width="90">Параметр 1</th>
+                            <th class="sort" data-column="4" width="90">Параметр 2</th>
+                            <th class="sort" data-column="5" width="90">Параметр 3</th>
+                            <th class="sort" data-column="5" width="110">Статус</th>
                         </tr>
                     </thead>
                     <tbody>
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="5">Итого:</td>
+                            <td colspan="6">Итого:</td>
                             <td>@($"{summa:0.00} руб.")</td>
                         </tr>
                     </tfoot>
