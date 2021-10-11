@@ -1,7 +1,14 @@
 ﻿@model CommandsViewModel
+@{ 
+    ViewData["Caption"] = "Отправка команды на терминал";
+}
 
-@using (Html.BeginForm("Submit", "Events", FormMethod.Post))
+@using (Html.BeginForm("Submit", "Cmd", FormMethod.Post, htmlAttributes: new { id = "filterr" }))
 {
+    <input asp-for="@Model.Order_num" id="Order_num" hidden />
+    <input asp-for="@Model.Order_direction" id="Order_direction" hidden />
+    @*@Html.Hidden("Order_num", 0, new { id = "Order_num" })
+    @Html.Hidden("Order_direction", "", new { id = "Order_direction" })*@
     <div class="catalog">
         <div class="catalog__head">
             <span class="catalog__label">Отправка команды на терминал</span>
@@ -29,8 +36,8 @@
                                     <div class="pseudoselect__list">
                                         @for (int i = 0; i < Model.Commands.Count; i++)
                                         {
-                        <li data-id_cmd="@Model.Commands[i].id">@Model.Commands[i].name</li> //Сораняем все типы команд в скрытые поля, чтобы модель подцепила эти данные
-                        <input type="hidden" asp-for="@Model.Commands[i].id" />
+                                            <li data-id_cmd="@Model.Commands[i].id">@Model.Commands[i].name</li> //Сораняем все типы команд в скрытые поля, чтобы модель подцепила эти данные
+                                            <input type="hidden" asp-for="@Model.Commands[i].id" />
                                             <input type="hidden" asp-for="@Model.Commands[i].name" />}
                                     </div>
                                 </div>
@@ -45,7 +52,7 @@
 
                 </div>
             </div>
-            <div class="box catalog__head-row">
+            <div class="gr_btn">
                 <button disabled class="btn catalog__btn"> Назад </button>       
                 <input type="submit" value="Отправить" class="btn catalog__btn" />
             </div>
@@ -61,10 +68,10 @@
                                 <th class="sort" data-column="3" width="90">Параметр 1</th>
                                 <th class="sort" data-column="4" width="90">Параметр 2</th>
                                 <th class="sort" data-column="5" width="90">Параметр 3</th>
-                                <th class="sort" data-column="5" width="110">Статус</th>
+                                <th class="sort" data-column="6" width="110">Статус</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="tbBody">
                             @if (Model != null)
                             {
                                 for (int i = 0; i < Model.LCmdHistory.Count; i++)
@@ -86,7 +93,6 @@
                                             @Model.LCmdHistory[i].parameter2
                                         </td>
                                         <td>
-                                        <td>
                                             @Model.LCmdHistory[i].parameter3
                                         </td>
                                         <td>
@@ -96,9 +102,6 @@
                                  }
                              }
                         </tbody>
-                        <tfoot>
-
-                        </tfoot>
                     </table>
                 </div>
             </div>
@@ -107,73 +110,7 @@
                 @section Scripts
 {
                     <script>
-                        $(document).on('click ', function (e) {
-                            if ($('.nav_menu').css('display') == 'block' && $($(e.target).parent()).attr('class') != 'open_menu_mob' && $(window).width() < 993) {
-                                $('.nav_menu').fadeOut();
-                            }
-                        });
-                        $('.open_menu_mob').on('click', function () {
-                            $('.nav_menu').fadeIn();
-                        });
-                        $(function () {
-                            let Order_num = $("#Order_num").val();
-                            let Order_direction = $("#Order_direction").val();
-
-                            $('[data-column=' + Order_num + ']').addClass(Order_direction > 0 ? 'sort-up' : 'sort-down');
-
-                            $('.sort').on('click', function () {
-                                $("#Order_num").val($(this).data('column'));
-
-                                if ($(this).attr('class') == "sort") {
-                                    $("#Order_direction").val('-1');
-                                } else {
-                                    if ($(this).hasClass('sort-up')) {
-                                        $("#Order_direction").val('-1');
-                                    } else {
-                                        $("#Order_direction").val('1');
-                                    }
-                                }
-                                $('#filterr').submit();
-                            });
-                        });
-                        $('.add_item').on('click', function (e) {
-                            e.preventDefault(); // этот код предотвращает стандартное поведение браузера по клику
-                            $('.action_name').val($(this).data('action'));
-                            $('#filterr_action').submit();
-                        });
-                        $('.edit_item').on('click', function () {
-                            $('.id_action').val($(this).data('id'));
-                            $('.name_action').val($(this).data('name'));
-                            $('.action_name').val($(this).data('action'));
-                            $('#filterr_action').submit();
-                        });
-                        $('.delete_item').on('click', function () {
-                            $('#filterr_delete').find('.id_action_del').val($(this).data('id'));
-                            $('.edite_add_block').fadeIn();
-                        });
-                        $('.delete_item_ok').on('click', function () {
-                            $('#filterr_delete').submit();
-                            $('.edite_add_block').fadeOut();
-                        });
-                        $('.btn.catalog__btn.gray').on('click', function (e) {
-                            e.preventDefault(); // этот код предотвращает стандартное поведение браузера по клику
-                            if ($('.del_formm').css('display') == 'block') {
-                                $('.edite_add_block').fadeOut();
-                            } else {
-                                location.href = window.location.href;
-                            }
-                        });
-
-                        $('.page_table').on('click', function () {
-                            var page = $(this).data('page');
-                            $('.page_table.active').removeClass('active');
-                            $(this).addClass('active');
-                            $('.active_list').removeClass('active_list');
-                            $('[data-list=' + page + ']').addClass('active_list');
-                            $("body,html").animate({
-                                scrollTop: 0
-                            }, 800);
-                        });
+                        
                     </script>
 
                 }

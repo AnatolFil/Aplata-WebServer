@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DataApiService.Models
+namespace WebServer.Models
 {
     public class CommandHistory
     {

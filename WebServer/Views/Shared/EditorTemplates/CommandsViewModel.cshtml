@@ -1,0 +1,36 @@
+﻿@model CommandsViewModel
+
+
+@{
+            @if (Model != null)
+            {
+                for (int i = 0; i < Model.LCmdHistory.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            @(i+1)
+                        </td>
+                        <td>
+                            @Model.LCmdHistory[i].time_created
+                        </td>
+                        <td>
+                            @Model.LCmdHistory[i].Cmd.name
+                        </td>
+                        <td>
+                            @Model.LCmdHistory[i].parameter1
+                        </td>
+                        <td>
+                            @Model.LCmdHistory[i].parameter2
+                        </td>
+                        <td>
+                            @Model.LCmdHistory[i].parameter3
+                        </td>
+                        <td>
+                            @Model.LCmdHistory[i].state_name
+                        </td>
+                    </tr>
+                }
+             }
+}
+
+

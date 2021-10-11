@@ -11,12 +11,12 @@ using WebServer.Models;
 
 namespace WebServer.Controllers
 {
-    public class EventsController:BaseController
+    public class CmdController:BaseController
     {
-        private readonly ILogger<EventsController> _logger;
+        private readonly ILogger<CmdController> _logger;
         private IDataManager _dataManager;
 
-        public EventsController(ILogger<EventsController> logger, IDataManager dataManager)
+        public CmdController(ILogger<CmdController> logger, IDataManager dataManager)
         {
             _logger = logger;
             _dataManager = dataManager;
@@ -33,7 +33,18 @@ namespace WebServer.Controllers
             var CmdTypes = await _dataManager.GetItems<Command>("commands/types", new Dictionary<string, string>());
             CommandsViewModel model = new CommandsViewModel();
             model.Commands = CmdTypes.ToList();
+            //Запрашиваем историю все команда для заданного терминала
+            var resultHist = await _dataManager.GetItems<CommandHistory>("terminals/" + model.IDTerminal.ToString() + "/commands", new Dictionary<string, string>());
+            model.LCmdHistory = resultHist.ToList();
 
+            //Сбрасываем текущий выбор команды
+            model.CmdParams = null;
+            //Инициализируем лист с историей команд для возможности отображения названия команд
+            foreach (CommandHistory item in model.LCmdHistory)
+            {
+                item.Cmd = model.Commands.FirstOrDefault<Command>(x => x.id == item.command_id);
+            }
+            
             return View(model);
         }
 
@@ -56,7 +67,10 @@ namespace WebServer.Controllers
                 param.Add("parameter3", CmdView.CmdParams.parameter3.ToString());
             }
 
-            //Запрашиваем историю все команда для заданного терминала
+            //Отправляем команду
+            var CmdSentResult = await _dataManager.SendItems<CommandResult>("terminals/" + CmdView.IDTerminal.ToString() + "/command", param);
+
+            //Запрашиваем историю всех команд для заданного терминала
             var resultHist = await _dataManager.GetItems<CommandHistory>("terminals/" + CmdView.IDTerminal.ToString() + "/commands", new Dictionary<string, string>());
 
             CmdView.LCmdHistory = resultHist.ToList();
@@ -85,6 +99,32 @@ namespace WebServer.Controllers
             cmd = CmdTypes.FirstOrDefault<Command>(x => x.id == idCmd);
             //Отправляем команду с выбранным id
             return PartialView("_CmdPartial", cmd);
+        }
+
+        /// <summary>
+        /// Сортировка таблицы
+        /// </summary>
+        /// <returns></returns>
+        [ResponseCache(NoStore = true, Duration = 0)]
+        public async Task<IActionResult> Sort(SortParam sortParam)
+        {
+            CommandsViewModel History = new CommandsViewModel();
+            //Запрашиваем историю всех команд для заданного терминала
+            var resultHist = await _dataManager.GetItems<CommandHistory>("terminals/" + sortParam.IDT.ToString() + "/commands", new Dictionary<string, string>());
+
+            History.LCmdHistory = resultHist.ToList();
+
+            //Получаем все типы команд
+            var CmdTypes = await _dataManager.GetItems<Command>("commands/types", new Dictionary<string, string>());
+            //Инициализируем лист с историей команд для возможности отображения названия команд
+            foreach (CommandHistory item in History.LCmdHistory)
+            {
+                item.Cmd = CmdTypes.ToList().FirstOrDefault<Command>(x => x.id == item.command_id);
+            }
+
+            //History.LCmdHistory.Sort(sortParam.dek());
+            sortParam.Sort(ref History);
+            return PartialView("_SortPartial", History);
         }
     }
 }

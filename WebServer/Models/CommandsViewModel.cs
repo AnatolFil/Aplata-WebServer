@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DataApiService.Models
+namespace WebServer.Models
 {
     public class CommandsViewModel
     {
@@ -17,5 +17,7 @@ namespace DataApiService.Models
         public List<CommandHistory> LCmdHistory { get; set; }
         public int CmdId { get; set; }
         public Command CmdParams { get; set; }
+        public int Order_num { get; set; }
+        public int Order_direction { get; set; }
     }
 }

@@ -96,7 +96,7 @@ function addParams(SelIdCmd) {
 	});
 }
 
-//Сортировка таблицы
+///////
 $(document).on('click ', function (e) {
     if ($('.nav_menu').css('display') == 'block' && $($(e.target).parent()).attr('class') != 'open_menu_mob' && $(window).width() < 993) {
         $('.nav_menu').fadeOut();
@@ -104,35 +104,26 @@ $(document).on('click ', function (e) {
 });
 $('.open_menu_mob').on('click', function () {
     $('.nav_menu').fadeIn();
+    alert("open_menu_mob");
 });
 $(function () {
     let Order_num = $("#Order_num").val();
     let Order_direction = $("#Order_direction").val();
     $('[data-column=' + Order_num + ']').addClass(Order_direction > 0 ? 'sort-up' : 'sort-down');
 
-	$(document).on('click', '.sort', function () {
-		$("#Order_num").val($(this).data('column'));
+    $('.sort').on('click', function () {
+        $("#Order_num").val($(this).data('column'));
 
-		if ($(this).attr('class') == "sort") {
-			$("#Order_direction").val('-1');
-		} else {
-			if ($(this).hasClass('sort-up')) {
-				$("#Order_direction").val('-1');
-			} else {
-				$("#Order_direction").val('1');
-			}
-		}
-		SendSortParam($("#Order_direction").val(), $("#Order_num").val(), $(".IDTerInput").val());
-		let Order_num = $("#Order_num").val();
-		let Order_direction = $("#Order_direction").val();	
-		let cl = $('[data-column=' + Order_num + ']').attr('class');
-		if (cl == "sort sort-up")
-			$('[data-column=' + Order_num + ']').toggleClass('sort-up');
-		if (cl == "sort sort-down")
-			$('[data-column=' + Order_num + ']').toggleClass('sort-down');
-		$('[data-column=' + Order_num + ']').addClass(Order_direction > 0 ? 'sort-up' : 'sort-down');
-		
-        //$('#filterr').submit();
+        if ($(this).attr('class') == "sort") {
+            $("#Order_direction").val('-1');
+        } else {
+            if ($(this).hasClass('sort-up')) {
+                $("#Order_direction").val('-1');
+            } else {
+                $("#Order_direction").val('1');
+            }
+        }
+        $('#filterr').submit();
     });
 });
 $('.add_item').on('click', function (e) {
@@ -173,19 +164,3 @@ $('.page_table').on('click', function () {
         scrollTop: 0
     }, 800);
 });
-
-//Отправка параметров сортировки
-function SendSortParam(Order_direction, Order_num, IDTerm) {
-	var sortParam = {Order: Order_direction,
-		Num: Order_num,
-		IDT: IDTerm };
-	$.ajax({
-		url: '/Cmd/Sort',
-		type: "post",
-		data: sortParam,
-		contentType: 'application/x-www-form-urlencoded',
-		success: function (html) {
-			$('#tbBody').html(html);
-		}
-	});
-}
