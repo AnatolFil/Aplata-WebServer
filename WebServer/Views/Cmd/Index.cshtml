@@ -5,10 +5,9 @@
 
 @using (Html.BeginForm("Submit", "Cmd", FormMethod.Post, htmlAttributes: new { id = "filterr" }))
 {
-    <input asp-for="@Model.Order_num" id="Order_num" hidden />
-    <input asp-for="@Model.Order_direction" id="Order_direction" hidden />
-    @*@Html.Hidden("Order_num", 0, new { id = "Order_num" })
-    @Html.Hidden("Order_direction", "", new { id = "Order_direction" })*@
+    <input asp-for="@Model.SortParm.Num" id="Order_num" hidden />
+    <input asp-for="@Model.SortParm.Order" id="Order_direction" hidden />
+    
     <div class="catalog">
         <div class="catalog__head">
             <span class="catalog__label">Отправка команды на терминал</span>
@@ -47,7 +46,7 @@
                 </tr>
             </table>
             <div class="box catalog__head-row">
-                @*Здесь будут динамически отображены формы для параметров команд, полученные через ajax*@
+                @*Здесь будут динамически подгружены формы для параметров команд, полученные через ajax*@
                 <div id="CmdParams">
 
                 </div>
@@ -71,6 +70,7 @@
                                 <th class="sort" data-column="6" width="110">Статус</th>
                             </tr>
                         </thead>
+                        @*При сортировке таблицы данные подружаются через Ajax*@
                         <tbody id="tbBody">
                             @if (Model != null)
                             {
@@ -107,10 +107,3 @@
             </div>
         </div>
 }
-                @section Scripts
-{
-                    <script>
-                        
-                    </script>
-
-                }

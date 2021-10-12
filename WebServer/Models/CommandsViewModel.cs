@@ -11,13 +11,13 @@ namespace WebServer.Models
             Commands = new List<Command>();
             LCmdHistory = new List<CommandHistory>();
             CmdParams = new Command();
+            SortParm = new SortParam();
         }
         public List<Command> Commands { get; set; }
         public int IDTerminal { get; set; } = 129;
         public List<CommandHistory> LCmdHistory { get; set; }
         public int CmdId { get; set; }
         public Command CmdParams { get; set; }
-        public int Order_num { get; set; }
-        public int Order_direction { get; set; }
+        public SortParam SortParm {get; set;}
     }
 }

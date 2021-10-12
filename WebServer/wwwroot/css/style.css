@@ -1641,4 +1641,5 @@ button[disabled] {
 .gr_btn{
     display: block;
     margin-left: 35%;
+    margin-top: 40px;
 }   

@@ -83,6 +83,10 @@ namespace WebServer.Controllers
                 item.Cmd = CmdView.Commands.FirstOrDefault<Command>(x => x.id == item.command_id);
             }
 
+            //Сотируем историю команд
+            SortParam tmpSortParam = CmdView.SortParm;
+            tmpSortParam.Sort(ref CmdView);
+
             return View("Index", CmdView);
         }
 
